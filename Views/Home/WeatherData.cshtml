@@ -1,0 +1,59 @@
+﻿@model WeatherData
+@{
+    Layout = "_Layout"; 
+    ViewBag.Title = "Daily Forecast";
+}
+
+@try
+{
+    <div style="text-align: center;">
+        <h2>Now in @Model.Address</h2>
+        <h1>@Model.Days[0].Temp °C</h1>
+        <h4>@Model.Days[0].Description</h4>
+        <h4>Feels like @Model.Days[0].FeelsLike °C Wind @Model.Days[0].WindSpeed mph Humidity @Model.Days[0].Humidity% Pressure  @Model.Days[0].Pressure mb</h4>
+    </div>
+
+    <h2>Daily</h2>
+    <table class="table table-sm table-striped table-bordered m-2">
+        <thead>
+            <tr>
+                <th>DateTime</th>
+                <th>Description</th>
+                <th>Temp</th>
+                <th>TempMax</th>
+                <th>TempMin</th>
+                <th>FeelsLike</th>
+                <th>WindSpeed</th>
+                <th>WindGust</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var day in Model.Days.GetRange(1, 6))
+            {
+                <tr>
+                    <td>@day.DateTime </td>
+                    <td>@day.Description</td>
+                    <td>@day.Temp °C</td>
+                    <td>@day.TempMax °C</td>
+                    <td>@day.TempMin °C</td>
+                    <td>@day.FeelsLike °C</td>
+                    <td>@day.WindSpeed mph</td>
+                    <td>@day.Windgust mph</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <a asp-action="" class="btn btn-sm btn-primary">Search Again!</a>
+    <br />
+}
+catch
+{
+
+    <h1>I am sorry, I can't find your city :(</h1>
+
+    <br />
+    <a asp-action="" class="btn btn-sm btn-primary">Search Again!</a>
+
+}

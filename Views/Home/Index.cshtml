@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Weather Forecast";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Weather Forecast</h1>
+    <br />
+    <label for="usr">Insert your City</label>
+    <input type="text" class="form-control" id="usr" text-center value="Paris">
+    <br />
+    <input type="button" class="btn btn-info" id="WeatherSearch" value="Check the next 7 days" />
+</div>
+
+
+@section Scripts {
+    <script type="text/javascript">
+        $("#WeatherSearch").click(function () {
+            var txtVal = $("#usr").val();
+            window.location = "@Url.Action("WeatherData","Home")" +
+                              "/" + txtVal;
+        });
+    </script>
+}
+
