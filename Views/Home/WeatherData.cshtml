@@ -6,6 +6,15 @@
 
 @try
 {
+    @if (Model is null)
+    {
+        <h1>I am sorry, I can't find your city :(</h1>
+
+        <br />
+        <a asp-action="" class="btn btn-sm btn-primary">Search Other City</a>
+        return;
+    }
+
     <div style="text-align: center;">
         <h2>Now (@Model.Days[0].DateTime) in @Model.Address</h2>
         <h1>@Model.Days[0].Temp °C</h1>

@@ -21,22 +21,22 @@ namespace WeatherForecast.Models
         public string DateTime { get; set; }
 
         [JsonProperty("windgust")]
-        public long Windgust { get; set; }
+        public string Windgust { get; set; }
 
         [JsonProperty("windspeed")]
         public long WindSpeed { get; set; }
 
         [JsonProperty("tempmin")]
-        public double TempMin { get; set; }
+        public string TempMin { get; set; }
 
         [JsonProperty("temp")]
-        public double Temp { get; set; }
+        public string Temp { get; set; }
 
         [JsonProperty("tempmax")]
-        public double TempMax { get; set; }
+        public string TempMax { get; set; }
 
         [JsonProperty("feelslike")]
-        public double FeelsLike { get; set; }
+        public string FeelsLike { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }
@@ -57,16 +57,16 @@ namespace WeatherForecast.Models
         public string DateTime { get; set; }
 
         [JsonProperty("windgust")]
-        public long Windgust { get; set; }
+        public string Windgust { get; set; }
 
         [JsonProperty("windspeed")]
-        public long WindSpeed { get; set; }
+        public string WindSpeed { get; set; }
 
         [JsonProperty("temp")]
-        public double Temp { get; set; }
+        public string Temp { get; set; }
 
         [JsonProperty("feelslike")]
-        public double FeelsLike { get; set; }
+        public string FeelsLike { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }
