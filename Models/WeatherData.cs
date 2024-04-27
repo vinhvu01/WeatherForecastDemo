@@ -13,6 +13,8 @@ namespace WeatherForecast.Models
 
         [JsonProperty("days")]
         public List<Days> Days { get; set; }
+
+        public string Period { get; set; }
     }
 
     public class Days

@@ -7,12 +7,33 @@
     <br />
     <label for="location">Please add a location to get started</label>
     <div class="input-group">
-        <div class="btn px-1 disabled"></div><input value="London,UK" class="form-control border-end-0 border-primary" type="text" id="location" placeholder="Enter a location" aria-describedby="locationHelpBlock">
+        <div class="btn px-1 disabled"></div>
+        <input value="London,UK" class="form-control border-end-0 border-primary" type="text" id="location" placeholder="Addresses, partial addresses or latitude,longitude values." aria-describedby="locationHelpBlock">
         <span class="input-group-append"></span></div>
     <br />
     <div>
         <input type="button" class="btn btn-info" id="SearchNext15Days" value="Next 15 days" />
-        <input type="button" class="btn btn-info" id="SearchLast30Days" value="Last 30days" />
+    </div>
+    <br/>
+    <hr />
+    <div>
+        <label for="fromDate">Specific Dynamic Periods:</label>
+        <select class="form-select form-select-lg" name="dynamicPeriods" id="dynamicPeriods">
+            <option selected>Open this select menu</option>
+            <option value="today">Today</option>
+            <option value="yesterday">Yesterday</option>
+            <option value="tomorrow">Tomorrow</option>
+            <option value="yeartodate">Year To Date</option>
+            <option value="monthtodate">Month To Date</option>
+            <option value="last7days">Last 7 Days</option>
+            <option value="last15days">Last 15 Days</option>
+            <option value="last30days">Last 30 Days</option>
+            <option value="last24hours">Last 24 hours</option>
+            <option value="next7days">Next 7 days</option>
+            <option value="next30days">Next 30 days</option>
+            <option value="next24hours">Next 24 hours</option>
+        </select>
+        <input type="button" class="btn btn-info" id="SearchDynamicPeriods" value="Search Dynamic Periods" />
     </div>
     <br />
     <hr />
@@ -64,9 +85,12 @@
                 "/" + txtVal;
         });
 
-        $("#SearchLast30Days").click(function () {
+        $("#SearchDynamicPeriods").click(function () {
             var txtVal = $("#location").val();
-            window.location = "@Url.Action("WeatherDataDynamicPeriod", "Home")?id=" + txtVal + "&period=last30days";
+            var period = $("#dynamicPeriods").val();
+            if (period != "") {
+                window.location = "@Url.Action("WeatherDataDynamicPeriod", "Home")?id=" + txtVal + "&period=" + period;
+            }
         });
         
         $("#SearchByDateRange").click(function () {

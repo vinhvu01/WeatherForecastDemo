@@ -27,7 +27,12 @@ namespace WeatherForecast.Controllers
             _logger.LogInformation("Index Request");
             return View();
         }
-        
+
+        public IActionResult About()
+        {
+            return View();
+        }
+
 
         public IActionResult Privacy()
         {
@@ -47,6 +52,7 @@ namespace WeatherForecast.Controllers
         {
             var url = $"{UrlTimeLine}/{id}/{period}?key={ApiKey}";
             var results = _rs.GetWeatherData(url).Result;
+            results.Period = period;
 
             return View(results);
         }

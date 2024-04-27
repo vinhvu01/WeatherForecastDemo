@@ -6,16 +6,24 @@
 
 @try
 {
+    @if (Model is null)
+    {
+        <h1>I am sorry, I can't find your city :(</h1>
+
+        <br />
+        <a asp-action="" class="btn btn-sm btn-primary">Search Other City</a>
+        return;
+    }
+
     <div style="text-align: center;">
-        <h2>Now (@Model.Days[0].DateTime) in @Model.Address</h2>
-        <h1>@Model.Days[0].Temp °C</h1>
-        <h4>@Model.Days[0].Description</h4>
-        <h4>Feels like @Model.Days[0].FeelsLike °C Wind @Model.Days[0].WindSpeed mph Humidity @Model.Days[0].Humidity% Pressure  @Model.Days[0].Pressure mb</h4>
+        <h2>@Model.Period.ToUpperInvariant() in @Model.Address</h2>
     </div>
 
     <h2>Daily</h2>
     <table class="table table-sm table-striped table-bordered m-2">
-        <thead>
+        @if (Model.Period != "last24hours" && Model.Period != "next24hours")
+        {
+            <thead>
             <tr>
                 <th>DateTime</th>
                 <th>Description</th>
@@ -26,10 +34,9 @@
                 <th>WindSpeed</th>
                 <th>WindGust</th>
             </tr>
-        </thead>
-        <tbody>
-
-            @foreach (var day in Model.Days.GetRange(1, Model.Days.Count - 1))
+            </thead>
+            <tbody>
+            @foreach (var day in Model.Days)
             {
                 <tr>
                     <td>@day.DateTime </td>
@@ -42,7 +49,35 @@
                     <td>@day.Windgust mph</td>
                 </tr>
             }
-        </tbody>
+            </tbody>
+        }
+        else
+        {
+            <thead>
+            <tr>
+                <th>DateTime</th>
+                <th>Temp</th>
+                <th>FeelsLike</th>
+                <th>WindSpeed</th>
+                <th>WindGust</th>
+                <th>Pressure</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            @foreach (var hour in Model.Days[0].Hours)
+            {
+                <tr>
+                    <td>@hour.DateTime </td>
+                    <td>@hour.Temp °C</td>
+                    <td>@hour.FeelsLike °C</td>
+                    <td>@hour.WindSpeed mph</td>
+                    <td>@hour.Windgust mph</td>
+                    <td>@hour.Pressure</td>
+                </tr>
+            }
+            </tbody>
+        }
     </table>
     <br />
     <a asp-action="" class="btn btn-sm btn-primary">Search Other City</a>
