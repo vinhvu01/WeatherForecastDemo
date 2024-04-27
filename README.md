@@ -20,3 +20,5 @@ Used:
 - Microsoft.NETCore.App
 - System.Net.Http for making requests to the backend.
 - Weather API (https://www.visualcrossing.com/).
+
+![chrome_s4zXK1wLGo](https://github.com/vinhvu01/WeatherForecastDemo/assets/53502920/2f0487fa-77b3-4c09-8f4f-4819b58344c7)
