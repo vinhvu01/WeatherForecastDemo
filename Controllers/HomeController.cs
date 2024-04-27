@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WeatherForecast.Models;
 using WeatherForecast.Services;
-using static System.Net.WebRequestMethods;
 
 namespace WeatherForecast.Controllers
 {
@@ -12,7 +9,7 @@ namespace WeatherForecast.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        private static readonly string ApiKey = "FD6XX363KUVNCP74P5E489F8G";
+        private static readonly string ApiKey = "";
 
         private static readonly string UrlTimeLine = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline";
 
@@ -40,32 +37,32 @@ namespace WeatherForecast.Controllers
 
         public IActionResult WeatherData(string id)
         {
-            string url = $"{UrlTimeLine}/{id}?key={ApiKey}";
-            WeatherData results = _rs.GetWeatherData(url).Result;
+            var url = $"{UrlTimeLine}/{id}?key={ApiKey}";
+            var results = _rs.GetWeatherData(url).Result;
 
             return View(results);
         }
 
         public IActionResult WeatherDataDynamicPeriod(string id, string period)
         {
-            string url = $"{UrlTimeLine}/{id}/{period}?key={ApiKey}";
-            WeatherData results = _rs.GetWeatherData(url).Result;
+            var url = $"{UrlTimeLine}/{id}/{period}?key={ApiKey}";
+            var results = _rs.GetWeatherData(url).Result;
 
             return View(results);
         }
 
         public IActionResult WeatherDataByDateRange(string id, string from, string to)
         {
-            string url = $"{UrlTimeLine}/{id}/{from}/{to}?key={ApiKey}";
-            WeatherData results = _rs.GetWeatherData(url).Result;
+            var url = $"{UrlTimeLine}/{id}/{from}/{to}?key={ApiKey}";
+            var results = _rs.GetWeatherData(url).Result;
 
             return View(results);
         }
 
         public IActionResult WeatherDataByLongLatRange(string longitude, string latitude)
         {
-            string url = $"{UrlTimeLine}/{longitude},{latitude}?key={ApiKey}";
-            WeatherData results = _rs.GetWeatherData(url).Result;
+            var url = $"{UrlTimeLine}/{longitude},{latitude}?key={ApiKey}";
+            var results = _rs.GetWeatherData(url).Result;
 
             return View(results);
         }
@@ -74,15 +71,15 @@ namespace WeatherForecast.Controllers
         {
             var datetime = DateTime.Parse(specificTime);
             var url = $"{UrlTimeLine}/{id}/{datetime:yyyy-MM-ddTHH:mm:ss}?key={ApiKey}";
-            WeatherData results = _rs.GetWeatherData(url).Result;
+            var results = _rs.GetWeatherData(url).Result;
 
             return View(results);
         }
 
         public IActionResult WeatherDataByUnixTime(string id, string from, string to)
         {
-            string url = $"{UrlTimeLine}/{id}/{from}/{to}?key={ApiKey}";
-            WeatherData results = _rs.GetWeatherData(url).Result;
+            var url = $"{UrlTimeLine}/{id}/{from}/{to}?key={ApiKey}";
+            var results = _rs.GetWeatherData(url).Result;
 
             return View(results);
         }
