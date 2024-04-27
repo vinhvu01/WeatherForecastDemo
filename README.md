@@ -18,5 +18,5 @@ Used:
 
 - Microsoft.AspNetCore.App
 - Microsoft.NETCore.App
-- RestSharp for making requests to backend.
+- System.Net.Http for making requests to the backend.
 - Weather API (https://www.visualcrossing.com/).
