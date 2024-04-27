@@ -5,20 +5,94 @@
 <div class="text-center">
     <h1 class="display-4">Weather Forecast</h1>
     <br />
-    <label for="usr">Insert your City</label>
-    <input type="text" class="form-control" id="usr" text-center value="Paris">
+    <label for="location">Please add a location to get started</label>
+    <div class="input-group">
+        <div class="btn px-1 disabled"></div><input value="London,UK" class="form-control border-end-0 border-primary" type="text" id="location" placeholder="Enter a location" aria-describedby="locationHelpBlock">
+        <span class="input-group-append"></span></div>
     <br />
-    <input type="button" class="btn btn-info" id="WeatherSearch" value="Check the next 7 days" />
+    <div>
+        <input type="button" class="btn btn-info" id="SearchNext15Days" value="Next 15 days" />
+        <input type="button" class="btn btn-info" id="SearchLast30Days" value="Last 30days" />
+    </div>
+    <br />
+    <hr />
+    <div>
+        <label for="fromDate">Specific time request:</label>
+        <input type="datetime-local" value="@DateTime.Today.ToString("s")" id="specificTime">
+        <input type="button" class="btn btn-info" id="SearchBySpecificTime" value="Forecast by specific time" />
+    </div>
+    <hr/>
+    <div>
+        <label for="fromDate">From Date:</label>
+        <input type="date" value="@DateTime.Today.ToString("yyyy-MM-dd")" id="fromDate" name="fromDate">
+        <label for="toDate">To Date:</label>
+        <input type="date" id="toDate" value="@DateTime.Today.AddDays(7).ToString("yyyy-MM-dd")" name="toDate">
+        <input type="button" class="btn btn-info" id="SearchByDateRange" value="Forecast by date range" />
+    </div>
+    <hr/>
+    <div>
+        <label for="location">Please add a latitude,longitude to get started</label>
+        <label for="latitude">Latitude:</label>
+        <input id="latitude" value="38.9697" class="form-control" type="text" placeholder="Enter a latitude">
+        <label for="longitude">Longitude:</label>
+        <input id="longitude" value="-77.385" class="form-control" type="text" placeholder="Enter a longitude">
+    </div>
+    <br />
+    <div>
+        <input type="button" class="btn btn-info" id="SearchByLongLatRange" value="Forecast by longitude and latitude" />
+    </div>
+    <hr />
+    <div>
+        <label for="location">Please add a UNIX Time (Epoch Time) to get started</label>
+        <label for="fromUnix">From UNIX Time:</label>
+        <input id="fromUnix" value="1601510400" class="form-control" type="text" placeholder="Enter a from UNIX Time">
+        <label for="toUnix">To UNIX Time:</label>
+        <input id="toUnix" value="1609372800" class="form-control" type="text" placeholder="Enter a to UNIX Time">
+    </div>
+    <br />
+    <div>
+        <input type="button" class="btn btn-info" id="SearchByUNIXTime" value="Forecast by UNIX Time" />
+    </div>
 </div>
 
 
 @section Scripts {
     <script type="text/javascript">
-        $("#WeatherSearch").click(function () {
-            var txtVal = $("#usr").val();
-            window.location = "@Url.Action("WeatherData","Home")" +
-                              "/" + txtVal;
+        $("#SearchNext15Days").click(function () {
+            var txtVal = $("#location").val();
+            window.location = "@Url.Action("WeatherData", "Home")" +
+                "/" + txtVal;
+        });
+
+        $("#SearchLast30Days").click(function () {
+            var txtVal = $("#location").val();
+            window.location = "@Url.Action("WeatherDataDynamicPeriod", "Home")?id=" + txtVal + "&period=last30days";
+        });
+        
+        $("#SearchByDateRange").click(function () {
+            var txtVal = $("#location").val();
+            var txtFromDate = $("#fromDate").val();
+            var txtToDate = $("#toDate").val();
+            window.location = "@Url.Action("WeatherDataByDateRange", "Home")?id=" + txtVal + "&from=" + txtFromDate + "&to=" + txtToDate;
+        });
+
+        $("#SearchByLongLatRange").click(function () {
+            var txtLong = $("#longitude").val();
+            var txtLat = $("#latitude").val();
+            window.location = "@Url.Action("WeatherDataByLongLatRange", "Home")?longitude=" + txtLong + "&latitude=" + txtLat;
+        });
+
+        $("#SearchBySpecificTime").click(function () {
+            var txtVal = $("#location").val();
+            var txtTime = $("#specificTime").val();
+            window.location = "@Url.Action("WeatherDataBySpecificTime", "Home")?id=" + txtVal + "&specificTime=" + txtTime;
+        });
+
+        $("#SearchByUNIXTime").click(function () {
+            var txtVal = $("#location").val();
+            var txtFromDate = $("#fromUnix").val();
+            var txtToDate = $("#toUnix").val();
+            window.location = "@Url.Action("WeatherDataByUnixTime", "Home")?id=" + txtVal + "&from=" + txtFromDate + "&to=" + txtToDate;
         });
     </script>
 }
-

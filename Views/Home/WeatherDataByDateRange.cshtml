@@ -7,10 +7,7 @@
 @try
 {
     <div style="text-align: center;">
-        <h2>Now (@Model.Days[0].DateTime) in @Model.Address</h2>
-        <h1>@Model.Days[0].Temp °C</h1>
-        <h4>@Model.Days[0].Description</h4>
-        <h4>Feels like @Model.Days[0].FeelsLike °C Wind @Model.Days[0].WindSpeed mph Humidity @Model.Days[0].Humidity% Pressure  @Model.Days[0].Pressure mb</h4>
+        <h2>Location in @Model.Address</h2>
     </div>
 
     <h2>Daily</h2>
@@ -29,7 +26,7 @@
         </thead>
         <tbody>
 
-            @foreach (var day in Model.Days.GetRange(1, 14))
+            @foreach (var day in Model.Days)
             {
                 <tr>
                     <td>@day.DateTime </td>

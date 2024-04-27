@@ -29,7 +29,7 @@
         </thead>
         <tbody>
 
-            @foreach (var day in Model.Days.GetRange(1, 14))
+            @foreach (var day in Model.Days.GetRange(1, Model.Days.Count - 1))
             {
                 <tr>
                     <td>@day.DateTime </td>
