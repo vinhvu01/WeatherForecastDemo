@@ -18,22 +18,26 @@
     <hr />
     <div>
         <label for="fromDate">Specific Dynamic Periods:</label>
-        <select class="form-select form-select-lg" name="dynamicPeriods" id="dynamicPeriods">
-            <option selected>Open this select menu</option>
-            <option value="today">Today</option>
-            <option value="yesterday">Yesterday</option>
-            <option value="tomorrow">Tomorrow</option>
-            <option value="yeartodate">Year To Date</option>
-            <option value="monthtodate">Month To Date</option>
-            <option value="last7days">Last 7 Days</option>
-            <option value="last15days">Last 15 Days</option>
-            <option value="last30days">Last 30 Days</option>
-            <option value="last24hours">Last 24 hours</option>
-            <option value="next7days">Next 7 days</option>
-            <option value="next30days">Next 30 days</option>
-            <option value="next24hours">Next 24 hours</option>
-        </select>
-        <input type="button" class="btn btn-info" id="SearchDynamicPeriods" value="Search Dynamic Periods" />
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dynamicPeriods" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Open this select menu
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dynamicPeriods">
+                <a class="dropdown-item" value="today">today</a>
+                <a class="dropdown-item" value="yesterday">yesterday</a>
+                <a class="dropdown-item" value="tomorrow">tomorrow</a>
+                <a class="dropdown-item" value="yeartodate">yeartodate</a>
+                <a class="dropdown-item" value="monthtodate">monthtodate</a>
+                <a class="dropdown-item" value="last7days">last7days</a>
+                <a class="dropdown-item" value="last15days">last15days</a>
+                <a class="dropdown-item" value="last30days">last30days</a>
+                <a class="dropdown-item" value="last24hours">last24hours</a>
+                <a class="dropdown-item" value="next7days">next7days</a>
+                <a class="dropdown-item" value="next30days">next30days</a>
+                <a class="dropdown-item" value="next24hours">next24hours</a>
+            </div>
+            <input type="button" class="btn btn-info" id="SearchDynamicPeriods" value="Search Dynamic Periods" />
+        </div>
     </div>
     <br />
     <hr />
@@ -79,6 +83,10 @@
 
 @section Scripts {
     <script type="text/javascript">
+        $(".dropdown-item").on("click", function () {
+            $('#dynamicPeriods').text($(this).text());
+        });
+
         $("#SearchNext15Days").click(function () {
             var txtVal = $("#location").val();
             window.location = "@Url.Action("WeatherData", "Home")" +
@@ -87,7 +95,7 @@
 
         $("#SearchDynamicPeriods").click(function () {
             var txtVal = $("#location").val();
-            var period = $("#dynamicPeriods").val();
+            var period = $('#dynamicPeriods').text();
             if (period != "") {
                 window.location = "@Url.Action("WeatherDataDynamicPeriod", "Home")?id=" + txtVal + "&period=" + period;
             }
