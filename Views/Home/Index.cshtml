@@ -138,6 +138,7 @@
         });
         
         $("#SearchByDateRange").click(function () {
+            var txtVal = $("#location").val();
             if (!isValid()) {
                 return;
             }
@@ -146,15 +147,15 @@
             var txtToDate = $("#toDate").val();
 
             if (txtFromDate == "") {
-                $('#messageModal').text("Please enter from Date.")
+                $('#messageModal').text("Please enter From Date.")
                 $('#myModal').modal("show");
-                return false;
+                return;
             }
 
             if (txtToDate == "") {
-                $('#messageModal').text("Please enter to Date.")
+                $('#messageModal').text("Please enter To Date.")
                 $('#myModal').modal("show");
-                return false;
+                return;
             }
 
             window.location = "@Url.Action("WeatherDataByDateRange", "Home")?id=" + txtVal + "&from=" + txtFromDate + "&to=" + txtToDate;
@@ -167,13 +168,13 @@
             if (txtLong == "") {
                 $('#messageModal').text("Please enter the longitude.")
                 $('#myModal').modal("show");
-                return false;
+                return;
             }
 
             if (txtLat == "") {
                 $('#messageModal').text("Please enter the latitude.")
                 $('#myModal').modal("show");
-                return false;
+                return;
             }
 
             window.location = "@Url.Action("WeatherDataByLongLatRange", "Home")?longitude=" + txtLong + "&latitude=" + txtLat;
@@ -189,7 +190,7 @@
             if (txtTime == "") {
                 $('#messageModal').text("Please enter the specific time.")
                 $('#myModal').modal("show");
-                return false;
+                return;
             }
 
             window.location = "@Url.Action("WeatherDataBySpecificTime", "Home")?id=" + txtVal + "&specificTime=" + txtTime;
@@ -205,13 +206,13 @@
             if (txtFromDate == "") {
                 $('#messageModal').text("Please enter the from Date.")
                 $('#myModal').modal("show");
-                return false;
+                return;
             }
 
             if (txtToDate == "") {
                 $('#messageModal').text("Please enter the to Date.")
                 $('#myModal').modal("show");
-                return false;
+                return;
             }
 
             window.location = "@Url.Action("WeatherDataByUnixTime", "Home")?id=" + txtVal + "&from=" + txtFromDate + "&to=" + txtToDate;

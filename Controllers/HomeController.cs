@@ -6,142 +6,147 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WeatherForecast.Models;
 using WeatherForecast.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace WeatherForecast.Controllers
 {
-	public class HomeController : Controller
-	{
-		private readonly ILogger<HomeController> _logger;
+    public class HomeController : Controller
+    {
+        private readonly ILogger<HomeController> _logger;
 
-		private static readonly string ApiKey = "";
+        private IConfiguration configuration;
 
-		private static readonly string UrlTimeLine = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline";
+        private static string _apiKey;
 
-		private RestService RestService { get; set; }
+        private static readonly string UrlTimeLine = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline";
 
-		public HomeController(ILogger<HomeController> logger)
-		{
-			_logger = logger;
-			RestService = new RestService();
-		}
+        private RestService RestService { get; set; }
 
-		public IActionResult Index()
-		{
-			_logger.LogInformation("Index Request");
-			return View();
-		}
+        public HomeController(ILogger<HomeController> logger, IConfiguration iConfig)
+        {
+            _logger = logger;
+            RestService = new RestService();
+            configuration = iConfig;
+            _apiKey = configuration.GetSection("MySettings").GetSection("ApiKey").Value;
+        }
 
-		public IActionResult About()
-		{
-			return View();
-		}
+        public IActionResult Index()
+        {
+            _logger.LogInformation("Index Request");
+            return View();
+        }
 
-		public IActionResult WeatherData(string id)
-		{
-			var url = $"{UrlTimeLine}/{id}?key={ApiKey}";
-			var results = RestService.GetWeatherData(url).Result;
-			var temp = new List<DataPoint>();
-			var tempMax = new List<DataPoint>();
-			var tempMin = new List<DataPoint>();
+        public IActionResult About()
+        {
+            return View();
+        }
 
-			foreach (var day in results.Days)
-			{
-				temp.Add(new DataPoint(day.DateTime, double.Parse(day.Temp)));
-				tempMax.Add(new DataPoint(day.DateTime, double.Parse(day.TempMax)));
-				tempMin.Add(new DataPoint(day.DateTime, double.Parse(day.TempMin)));
-			}
+        public IActionResult WeatherData(string id)
+        {
+            var url = $"{UrlTimeLine}/{id}?key={_apiKey}";
+            var results = RestService.GetWeatherData(url).Result;
+            var temp = new List<DataPoint>();
+            var tempMax = new List<DataPoint>();
+            var tempMin = new List<DataPoint>();
 
-			ViewBag.Temp = JsonConvert.SerializeObject(temp);
-			ViewBag.TempMax = JsonConvert.SerializeObject(tempMax);
-			ViewBag.TempMin = JsonConvert.SerializeObject(tempMin);
-			return View(results);
-		}
+            foreach (var day in results.Days)
+            {
+                temp.Add(new DataPoint(day.DateTime, double.Parse(day.Temp)));
+                tempMax.Add(new DataPoint(day.DateTime, double.Parse(day.TempMax)));
+                tempMin.Add(new DataPoint(day.DateTime, double.Parse(day.TempMin)));
+            }
 
-		public IActionResult WeatherDataDynamicPeriod(string id, string period)
-		{
-			var url = $"{UrlTimeLine}/{id}/{period}?key={ApiKey}";
-			var results = RestService.GetWeatherData(url).Result;
-			results.Period = period;
-			var windSpeed = new List<DataPoint>();
-			var windGust = new List<DataPoint>();
-			var windDir = new List<DataPoint>();
-			if (results.Period != "last24hours" && results.Period != "next24hours")
-			{
-				foreach (var day in results.Days)
-				{
-					windSpeed.Add(new DataPoint(day.DateTime, double.Parse(day.WindSpeed)));
-					windGust.Add(new DataPoint(day.DateTime, double.Parse(day.Windgust)));
-					windDir.Add(new DataPoint(day.DateTime, double.Parse(day.WindDir)));
-				}
-			}
-			else
-			{
-				foreach (var hour in results.Days[0].Hours)
-				{
-					windSpeed.Add(new DataPoint(hour.DateTime, double.Parse(hour.WindSpeed)));
-					windGust.Add(new DataPoint(hour.DateTime, double.Parse(hour.Windgust)));
-					windDir.Add(new DataPoint(hour.DateTime, double.Parse(hour.WindDir)));
-				}
-			}
+            ViewBag.Temp = JsonConvert.SerializeObject(temp);
+            ViewBag.TempMax = JsonConvert.SerializeObject(tempMax);
+            ViewBag.TempMin = JsonConvert.SerializeObject(tempMin);
+            return View(results);
+        }
 
-			ViewBag.WindSpeed = JsonConvert.SerializeObject(windSpeed);
-			ViewBag.WindGust = JsonConvert.SerializeObject(windGust);
-			ViewBag.WindDir = JsonConvert.SerializeObject(windDir);
+        public IActionResult WeatherDataDynamicPeriod(string id, string period)
+        {
+            var url = $"{UrlTimeLine}/{id}/{period}?key={_apiKey}";
+            var results = RestService.GetWeatherData(url).Result;
+            results.Period = period;
+            var windSpeed = new List<DataPoint>();
+            var windGust = new List<DataPoint>();
+            var windDir = new List<DataPoint>();
+            if (results.Period != "last24hours" && results.Period != "next24hours")
+            {
+                foreach (var day in results.Days)
+                {
+                    windSpeed.Add(new DataPoint(day.DateTime, double.Parse(day.WindSpeed)));
+                    windGust.Add(new DataPoint(day.DateTime, double.Parse(day.Windgust)));
+                    windDir.Add(new DataPoint(day.DateTime, double.Parse(day.WindDir)));
+                }
+            }
+            else
+            {
+                foreach (var hour in results.Days[0].Hours)
+                {
+                    windSpeed.Add(new DataPoint(hour.DateTime, double.Parse(hour.WindSpeed)));
+                    windGust.Add(new DataPoint(hour.DateTime, double.Parse(hour.Windgust)));
+                    windDir.Add(new DataPoint(hour.DateTime, double.Parse(hour.WindDir)));
+                }
+            }
 
-			return View(results);
-		}
+            ViewBag.WindSpeed = JsonConvert.SerializeObject(windSpeed);
+            ViewBag.WindGust = JsonConvert.SerializeObject(windGust);
+            ViewBag.WindDir = JsonConvert.SerializeObject(windDir);
 
-		public IActionResult WeatherDataByDateRange(string id, string from, string to)
-		{
-			var url = $"{UrlTimeLine}/{id}/{from}/{to}?key={ApiKey}";
-			var results = RestService.GetWeatherData(url).Result;
+            return View(results);
+        }
 
-			var temp = results.Days.Select(day =>
-					new DataRangePoint(day.DateTime, new[] { double.Parse(day.TempMin), double.Parse(day.TempMax) }))
-				.ToList();
+        public IActionResult WeatherDataByDateRange(string id, string from, string to)
+        {
+            var url = $"{UrlTimeLine}/{id}/{from}/{to}?key={_apiKey}";
+            var results = RestService.GetWeatherData(url).Result;
 
-			ViewBag.Temp = JsonConvert.SerializeObject(temp);
-			return View(results);
-		}
+            var temp = results.Days.Select(day =>
+                    new DataRangePoint(day.DateTime, new[] { double.Parse(day.TempMin), double.Parse(day.TempMax) }))
+                .ToList();
 
-		public IActionResult WeatherDataByLongLatRange(string longitude, string latitude)
-		{
-			var url = $"{UrlTimeLine}/{longitude},{latitude}?key={ApiKey}";
-			var results = RestService.GetWeatherData(url).Result;
-			var dew = results.Days.Select(day => new DataPoint(day.DateTime, double.Parse(day.Dew))).ToList();
+            ViewBag.Temp = JsonConvert.SerializeObject(temp);
+            return View(results);
+        }
 
-			ViewBag.Dew = JsonConvert.SerializeObject(dew);
-			return View(results);
-		}
+        public IActionResult WeatherDataByLongLatRange(string longitude, string latitude)
+        {
+            var url = $"{UrlTimeLine}/{longitude},{latitude}?key={_apiKey}";
+            var results = RestService.GetWeatherData(url).Result;
+            var dew = results.Days.Select(day => new DataPoint(day.DateTime, double.Parse(day.Dew))).ToList();
 
-		public IActionResult WeatherDataBySpecificTime(string id, string specificTime)
-		{
-			var datetime = DateTime.Parse(specificTime);
-			var url = $"{UrlTimeLine}/{id}/{datetime:yyyy-MM-ddTHH:mm:ss}?key={ApiKey}";
-			var results = RestService.GetWeatherData(url).Result;
-			var feelLike = results.Days[0].Hours.Select(hour => new DataPoint(hour.DateTime, double.Parse(hour.FeelsLike))).ToList();
+            ViewBag.Dew = JsonConvert.SerializeObject(dew);
+            return View(results);
+        }
 
-			ViewBag.Feelslike = JsonConvert.SerializeObject(feelLike);
-			return View(results);
-		}
+        public IActionResult WeatherDataBySpecificTime(string id, string specificTime)
+        {
+            var datetime = DateTime.Parse(specificTime);
+            var url = $"{UrlTimeLine}/{id}/{datetime:yyyy-MM-ddTHH:mm:ss}?key={_apiKey}";
+            var results = RestService.GetWeatherData(url).Result;
+            var feelLike = results.Days[0].Hours.Select(hour => new DataPoint(hour.DateTime, double.Parse(hour.FeelsLike))).ToList();
 
-		public IActionResult WeatherDataByUnixTime(string id, string from, string to)
-		{
-			var url = $"{UrlTimeLine}/{id}/{from}/{to}?key={ApiKey}";
-			var results = RestService.GetWeatherData(url).Result;
-			var number = 15;
+            ViewBag.Feelslike = JsonConvert.SerializeObject(feelLike);
+            return View(results);
+        }
 
-			if (results.Days.Count < number)
-			{
-				number = results.Days.Count;
-			}
+        public IActionResult WeatherDataByUnixTime(string id, string from, string to)
+        {
+            var url = $"{UrlTimeLine}/{id}/{from}/{to}?key={_apiKey}";
+            var results = RestService.GetWeatherData(url).Result;
+            var number = 15;
 
-			var temp = results.Days.Take(number).Select(day =>
-					new DataRangePoint(day.DateTime, new[] { double.Parse(day.TempMin), double.Parse(day.TempMax) }))
-				.ToList();
+            if (results.Days.Count < number)
+            {
+                number = results.Days.Count;
+            }
 
-			ViewBag.Temp = JsonConvert.SerializeObject(temp);
-			return View(results);
-		}
-	}
+            var temp = results.Days.Take(number).Select(day =>
+                    new DataRangePoint(day.DateTime, new[] { double.Parse(day.TempMin), double.Parse(day.TempMax) }))
+                .ToList();
+
+            ViewBag.Temp = JsonConvert.SerializeObject(temp);
+            return View(results);
+        }
+    }
 }
