@@ -32,6 +32,7 @@ Search Forecast page:
 Daily Result page:
 
 ![image](https://github.com/vinhvu01/WeatherForecastDemo/assets/53502920/61b0dd97-4f90-4ec8-9c97-6e5d9819fd7d)
+![image](https://github.com/vinhvu01/WeatherForecastDemo/assets/53502920/d049b07a-6c3d-42fd-8d88-3d3288fb62c5)
 
 Hourly Result page:
 
