@@ -14,6 +14,7 @@ Done:
 - Weather displayed hourly and daily.
 - Pick location ability to see.
 - Demonstrate data by charts.
+- Filter some params
 
 Used:
 
@@ -30,7 +31,7 @@ Search Forecast page:
 
 Daily Result page:
 
-![image](https://github.com/vinhvu01/WeatherForecastDemo/assets/53502920/0cd3b69c-fc59-4b75-9a28-3bfe9f783a58)
+![image](https://github.com/vinhvu01/WeatherForecastDemo/assets/53502920/61b0dd97-4f90-4ec8-9c97-6e5d9819fd7d)
 
 Hourly Result page:
 
