@@ -1,6 +1,6 @@
 # WeatherForecastDemo
 
-The following is a website written in Asp.NET Core for educational purposes. It calls Weather API (www.visualcrossing.com) to get weather forecast information for specified cities.
+The following is a website written in Asp.NET Core for educational purposes. It calls Weather API (www.visualcrossing.com) to get weather forecast information for specified cities, and locations.
 
 The Visual Crossing Weather API provides developers weather data for any programming language or script. The Weather API provides instant and scalable access to historical weather reports and forecast data in an easy-to-use JSON or text format. See https://www.visualcrossing.com/weather-api for more information and additional documentation, sample code, and use cases.
 
