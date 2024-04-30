@@ -23,7 +23,15 @@ Used:
 - System.Net.Http for making requests to the backend.
 - Weather API (https://www.visualcrossing.com/).
 - CanvasJs
-- BingMapAPI
+- BingMap API
+
+Note:
+Need to fill APIkey of the Weather API and BingMap API in the section MySettings of the file appsettings.json
+
+"MySettings": {
+    "ApiKey": "",
+    "BingMapApiKey": ""
+}
 
 Search Forecast page:
 
