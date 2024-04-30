@@ -80,6 +80,30 @@ catch
 
 }
 
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Validation Error</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <label id="messageModal"></label>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <script>
     window.onload = function () {
 
@@ -117,19 +141,34 @@ catch
         $(document).ajaxStop($.unblockUI);
 
         $("#Filter").click(function () {
-            $.blockUI();
             var location = '@Model?.Address';
+            var tempOver = $("#tempOver").val();
+            var tempLess = $("#tempLess").val();
             var overThan = 0;
             var lessThan = 0;
             var noRain = null;
             var partlyCloudy = null;
 
-            if (isNumeric($("#tempOver").val())) {
-                overThan = $("#tempOver").val();
+            if (tempOver != "") {
+                if (isNumeric(tempOver)) {
+                    overThan = tempOver;
+                }
+                else {
+                    $('#messageModal').text("The temperature over should be a number.")
+                    $('#myModal').modal("show");
+                    return;
+                }
             }
 
-            if (isNumeric($("#tempLess").val())) {
-                lessThan = $("#tempLess").val();
+            if (tempLess != "") {
+                if (isNumeric(tempLess)) {
+                    lessThan = tempLess;
+                }
+                else {
+                    $('#messageModal').text("The max temperature below should be a number.")
+                    $('#myModal').modal("show");
+                    return;
+                }
             }
 
             if ($('#NoRain').is(":checked")) {
@@ -140,15 +179,18 @@ catch
                 partlyCloudy = true;
             }
 
-            $.ajax({
-                type: "GET",
-                url: "/Home/WeatherData/",
-                data: { "id": location, "overThan": overThan, "lessThan": lessThan, "noRain": noRain, "partlyCloudy": partlyCloudy },
-                success: function (jsReturnArgs) {
-                    $("#dayTable").html(jsReturnArgs);
-                },
-                error: function (errorData) { onError(errorData); }
-            });
+            if (overThan > 0 || lessThan > 0 || noRain == true || partlyCloudy == true) {
+                $.blockUI();
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/WeatherData/",
+                    data: { "id": location, "overThan": overThan, "lessThan": lessThan, "noRain": noRain, "partlyCloudy": partlyCloudy },
+                    success: function (jsReturnArgs) {
+                        $("#dayTable").html(jsReturnArgs);
+                    },
+                    error: function (errorData) { onError(errorData); }
+                });
+            }
         });
     </script>
 }
