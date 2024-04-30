@@ -41,7 +41,7 @@ namespace WeatherForecast.Controllers
             return View();
         }
 
-        public IActionResult WeatherData(string id)
+        public IActionResult WeatherData(string id, int overThan = 0, int lessThan = 0, bool? noRain = null, bool? partlyCloudy = null)
         {
             var url = $"{UrlTimeLine}/{id}?key={_apiKey}";
             var results = RestService.GetWeatherData(url).Result;
@@ -59,6 +59,16 @@ namespace WeatherForecast.Controllers
             ViewBag.Temp = JsonConvert.SerializeObject(temp);
             ViewBag.TempMax = JsonConvert.SerializeObject(tempMax);
             ViewBag.TempMin = JsonConvert.SerializeObject(tempMin);
+            var hasFilter = overThan > 0 || lessThan > 0 || noRain == true || partlyCloudy == true;
+            var days = results.Days;
+            //filter
+            days = Filter(overThan, lessThan, noRain, partlyCloudy, days);
+
+            if (hasFilter)
+            {
+                return PartialView("_DaysTable", days);
+            }
+
             return View(results);
         }
 
@@ -150,6 +160,31 @@ namespace WeatherForecast.Controllers
 
             ViewBag.Temp = JsonConvert.SerializeObject(temp);
             return View(results);
+        }
+
+        private static List<Days> Filter(int overThan, int lessThan, bool? noRain, bool? partlyCloudy, List<Days> days)
+        {
+            if (overThan > 0)
+            {
+                days = days.Where(x => double.Parse(x.Temp) > overThan).ToList();
+            }
+
+            if (lessThan > 0)
+            {
+                days = days.Where(x => double.Parse(x.TempMax) < lessThan).ToList();
+            }
+
+            if (noRain == true)
+            {
+                days = days.Where(x => x.PreCipType == null).ToList();
+            }
+
+            if (partlyCloudy == true)
+            {
+                days = days.Where(x => x.Description.Contains("Partly cloudy")).ToList();
+            }
+
+            return days;
         }
     }
 }

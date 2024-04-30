@@ -1,6 +1,6 @@
 ﻿@model WeatherData
 @{
-    Layout = "_Layout"; 
+    Layout = "_Layout";
     ViewBag.Title = "Daily Forecast";
 }
 
@@ -16,15 +16,54 @@
     }
 
     <div style="text-align: center;">
-        <h2>Now (@Model.Days[0].DateTime) in @Model.Address</h2>
-        <h1>@Model.Days[0].Temp °C</h1>
-        <h4>@Model.Days[0].Description</h4>
-        <h4>Feels like @Model.Days[0].FeelsLike °C Wind @Model.Days[0].WindSpeed mph Humidity @Model.Days[0].Humidity% Pressure  @Model.Days[0].Pressure mb</h4>
+        <h2>Location in @Model.Address</h2>
     </div>
+
+    <div>
+        <b>Please add some filter items:</b>
+        <br />
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="tempOver">Temperature over</label>
+            </div>
+            <div class="col-sm-3">
+                <input id="tempOver" value="" class="form-control input-sm" type="text" placeholder="Enter a temperature">
+            </div>
+            <div class="col-sm-3">
+                <label for="tempLess">Max temperature below</label>
+            </div>
+            <div class="col-sm-3">
+                <input id="tempLess" value="" class="form-control input-sm" type="text" placeholder="Enter a temperature">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-check col-sm-3" style="margin-left: 20px;">
+                <input class="form-check-input" type="checkbox" value="" id="NoRain">
+                <label class="form-check-label" for="NoRain">
+                    No rain
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-check col-sm-3" style="margin-left: 20px;">
+                <input class="form-check-input" type="checkbox" value="" id="PartlyCloudy">
+                <label class="form-check-label" for="PartlyCloudy">
+                    Partly cloudy
+                </label>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div>
+        <input type="button" class="btn btn-info" id="Filter" value="Filter" />
+    </div>
+    <br />
 
     <h2>Daily</h2>
 
-    Html.RenderPartial("_DaysTable", Model.Days.GetRange(1, 14));
+    <div id="dayTable">
+        @Html.Partial("_DaysTable", Model.Days);
+    </div>
 
     <div id="chartContainer" style="height: 370px; width: 100%;"></div>
 
@@ -42,34 +81,74 @@ catch
 }
 
 <script>
-	window.onload = function () {
+    window.onload = function () {
 
-		var chart = new CanvasJS.Chart("chartContainer", {
-			animationEnabled: true,
-			title: {
-				text: "Temperature Trends By Days"
-			},
-			toolTip: {
-				shared: true
-			},
-			data: [{
-				type: "line",
-				name: "Temp",
-				showInLegend: true,
-				dataPoints: @Html.Raw(ViewBag.Temp)
-		}, {
-				type: "line",
-				name: "TempMax",
-				showInLegend: true,
-				dataPoints: @Html.Raw(ViewBag.TempMax)
-		}, {
-				type: "line",
-				name: "TempMin",
-				showInLegend: true,
-				dataPoints: @Html.Raw(ViewBag.TempMin)
-		}]
-		});
-		chart.render();
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            title: {
+                text: "Temperature Trends By Days"
+            },
+            toolTip: {
+                shared: true
+            },
+            data: [{
+                type: "line",
+                name: "Temp",
+                showInLegend: true,
+                dataPoints: @Html.Raw(ViewBag.Temp)
+                }, {
+                type: "line",
+                name: "TempMax",
+                showInLegend: true,
+                dataPoints: @Html.Raw(ViewBag.TempMax)
+                }, {
+                type: "line",
+                name: "TempMin",
+                showInLegend: true,
+                dataPoints: @Html.Raw(ViewBag.TempMin)
+                }]
+        });
+        chart.render();
 
-	}
+    }
 </script>
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ajaxStop($.unblockUI);
+
+        $("#Filter").click(function () {
+            $.blockUI();
+            var location = '@Model?.Address';
+            var overThan = 0;
+            var lessThan = 0;
+            var noRain = null;
+            var partlyCloudy = null;
+
+            if (isNumeric($("#tempOver").val())) {
+                overThan = $("#tempOver").val();
+            }
+
+            if (isNumeric($("#tempLess").val())) {
+                lessThan = $("#tempLess").val();
+            }
+
+            if ($('#NoRain').is(":checked")) {
+                noRain = true;
+            }
+
+            if ($('#PartlyCloudy').is(":checked")) {
+                partlyCloudy = true;
+            }
+
+            $.ajax({
+                type: "GET",
+                url: "/Home/WeatherData/",
+                data: { "id": location, "overThan": overThan, "lessThan": lessThan, "noRain": noRain, "partlyCloudy": partlyCloudy },
+                success: function (jsReturnArgs) {
+                    $("#dayTable").html(jsReturnArgs);
+                },
+                error: function (errorData) { onError(errorData); }
+            });
+        });
+    </script>
+}

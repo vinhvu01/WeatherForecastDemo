@@ -19,13 +19,14 @@
         <h2>@Model.Period.ToUpperInvariant() in @Model.Address</h2>
     </div>
 
-    <h2>Daily</h2>
     @if (Model.Period != "last24hours" && Model.Period != "next24hours")
     {
+        <h2>Daily</h2>
         Html.RenderPartial("_DaysTable", Model.Days);
     }
     else
     {
+        <h2>Hourly</h2>
         Html.RenderPartial("_HoursTable", Model.Days[0].Hours);
     }
     <div id="chartContainer" style="height: 370px; width: 100%;"></div>
