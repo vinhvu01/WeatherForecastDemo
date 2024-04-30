@@ -21,5 +21,12 @@ Used:
 - System.Net.Http for making requests to the backend.
 - Weather API (https://www.visualcrossing.com/).
 
+Search ForeCast page:
 ![image](https://github.com/vinhvu01/WeatherForecastDemo/assets/53502920/a9a55a39-f8de-49b6-adcd-5c86f4674d05)
+
+Daily Result page:
+![image](https://github.com/vinhvu01/WeatherForecastDemo/assets/53502920/c20dc52b-4912-44ba-a3a7-de56d3e8652a)
+
+Hourly Result page:
+![image](https://github.com/vinhvu01/WeatherForecastDemo/assets/53502920/b42904bd-52ec-40fd-bdbd-55fb6cd16a30)
 
