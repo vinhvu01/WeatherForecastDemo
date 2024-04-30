@@ -28,6 +28,7 @@
     {
         Html.RenderPartial("_HoursTable", Model.Days[0].Hours);
     }
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
     <a asp-action="" class="btn btn-sm btn-primary">Search Other City</a>
     <br />
 }
@@ -40,3 +41,43 @@ catch
     <a asp-action="" class="btn btn-sm btn-primary">Search Other City</a>
 
 }
+<script>
+	window.onload = function () {
+
+		var chart = new CanvasJS.Chart("chartContainer", {
+			theme: "light2",
+			title: {
+				text: "Comparison types of Wind by datetime"
+			},
+			toolTip: {
+				shared: true
+			},
+            data: [{
+                type: "area",
+                name: "WindSpeed",
+                markerSize: 0,
+                xValueType: "dateTime",
+                dataPoints: @Html.Raw(ViewBag.WindSpeed)
+            },
+            {
+                type: "area",
+                name: "Windgust",
+                markerSize: 0,
+                xValueType: "dateTime",
+                dataPoints: @Html.Raw(ViewBag.Windgust)
+            },
+            {
+                type: "splineArea",
+                color: "#F4A12B",
+                lineColor: "black",
+                markerColor: "black",
+                name: "WindDir",
+                xValueType: "dateTime",
+                dataPoints: @Html.Raw(ViewBag.WindDir)
+            }
+            ]
+		});
+		chart.render();
+
+	}
+</script>

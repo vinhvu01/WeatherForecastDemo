@@ -12,15 +12,41 @@
 
     <h2>Daily</h2>
     Html.RenderPartial("_DaysTable", Model.Days);
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
     <a asp-action="" class="btn btn-sm btn-primary">Search Other City</a>
     <br />
 }
 catch
 {
-
     <h1>I am sorry, I can't find your city :(</h1>
-
     <br />
     <a asp-action="" class="btn btn-sm btn-primary">Search Other City</a>
-
 }
+
+<script>
+	window.onload = function () {
+
+		var chart = new CanvasJS.Chart("chartContainer", {
+			theme: "light1",
+			animationEnabled: true,
+			title: {
+				text: "Daily Max / Min Temperature"
+			},
+			axisX: {
+				interval: 1
+			},
+			axisY: {
+				includeZero: false,
+				suffix: " °C"
+			},
+			data: [{
+				type: "rangeColumn",
+				indexLabel: "{y[#index]} °C",
+				toolTipContent: "<b>{label}</b><br>Min: {y[0]} °C, Max: {y[1]} °C",
+				dataPoints: @Html.Raw(ViewBag.Temp)
+		}]
+		});
+		chart.render();
+
+	}
+</script>

@@ -12,6 +12,7 @@
 
     <h2>Daily</h2>
     Html.RenderPartial("_DaysTable", Model.Days);
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
     <a asp-action="" class="btn btn-sm btn-primary">Search Other City</a>
     <br />
 }
@@ -22,5 +23,26 @@ catch
 
     <br />
     <a asp-action="" class="btn btn-sm btn-primary">Search Other City</a>
-
 }
+
+<script>
+    window.onload = function () {
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            theme: "light2",
+            title: {
+                text: "Dew Trends By Days"
+            },
+            axisY: {
+                title: "Dew amount C"
+            },
+            data: [{
+                type: "column",
+                dataPoints: @Html.Raw(ViewBag.Dew)
+        }]
+        });
+        chart.render();
+
+    }
+</script>

@@ -26,7 +26,7 @@ namespace WeatherForecast.Models
         public string Windgust { get; set; }
 
         [JsonProperty("windspeed")]
-        public long WindSpeed { get; set; }
+        public string WindSpeed { get; set; }
 
         [JsonProperty("winddir")]
         public string WindDir { get; set; }

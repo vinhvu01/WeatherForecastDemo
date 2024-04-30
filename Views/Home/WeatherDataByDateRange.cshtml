@@ -15,7 +15,6 @@
     Html.RenderPartial("_DaysTable", Model.Days);
 
     <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
 
     <a asp-action="" class="btn btn-sm btn-primary">Search Other City</a>
     <br />
@@ -31,27 +30,33 @@ catch
 }
 
 <script>
-    window.onload = function () {
+	window.onload = function () {
 
-        var chart = new CanvasJS.Chart("chartContainer", {
-            animationEnabled: true,
-            title: {
-                text: "Feelslike forecast by days"
-            },
-            axisX: {
-                valueFormatString: "DD MMM"
-            },
-            axisY: {
-                title: "Feelslike"
-            },
-            data: [{
-                type: "spline",
-                xValueType: "dateTime",
-                xValueFormatString: "DD MMM",
-                dataPoints: @Html.Raw(ViewBag.Feelslike)
-            }]
-            });
-        chart.render();
+		var chart = new CanvasJS.Chart("chartContainer", {
+			animationEnabled: true,
+			exportEnabled: true,
+			title: {
+				text: "Average Max/Min Temperature"
+			},
+			axisY: {
+				includeZero: false,
+				title: "Temperature (°C)",
+				suffix: " °C"
+			},
+			axisX: {
+				valueFormatString: "DD MMM"
+			},
+			data: [
+				{
+					type: "rangeArea",
+					xValueFormatString: "DD MMM",
+					yValueFormatString: "#,##0.## °C",
+					toolTipContent: " <span style=\"color:#4F81BC\">{x}</span><br><b>Min:</b> {y[0]}<br><b>Max:</b> {y[1]}",
+					xValueType: "dateTime",
+					dataPoints: @Html.Raw(ViewBag.Temp)
+				}]
+		});
+		chart.render();
 
-    }
+	}
 </script>

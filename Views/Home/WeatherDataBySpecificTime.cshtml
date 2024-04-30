@@ -24,6 +24,7 @@
 
     <h2>Hourly</h2>
     Html.RenderPartial("_HoursTable", Model.Days[0].Hours);
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
     <a asp-action="" class="btn btn-sm btn-primary">Search Other City</a>
     <br />
 }
@@ -34,5 +35,30 @@ catch
 
     <br />
     <a asp-action="" class="btn btn-sm btn-primary">Search Other City</a>
-
 }
+
+<script>
+    window.onload = function () {
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            title: {
+                text: "Feelslike forecast by hours"
+            },
+            axisX: {
+                valueFormatString: "DD MMM"
+            },
+            axisY: {
+                title: "Feelslike"
+            },
+            data: [{
+                type: "spline",
+                xValueType: "dateTime",
+                xValueFormatString: "DD MMM",
+                dataPoints: @Html.Raw(ViewBag.Feelslike)
+                }]
+        });
+        chart.render();
+
+    }
+</script>
