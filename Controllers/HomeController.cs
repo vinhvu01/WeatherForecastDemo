@@ -116,6 +116,9 @@ namespace WeatherForecast.Controllers
             var dew = results.Days.Select(day => new DataPoint(day.DateTime, double.Parse(day.Dew))).ToList();
 
             ViewBag.Dew = JsonConvert.SerializeObject(dew);
+            results.BingMapApiKey = configuration.GetSection("MySettings").GetSection("BingMapApiKey").Value;
+            results.Longitude = double.Parse(longitude);
+            results.Latitude = double.Parse(latitude);
             return View(results);
         }
 

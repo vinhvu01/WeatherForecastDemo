@@ -15,6 +15,12 @@ namespace WeatherForecast.Models
         public List<Days> Days { get; set; }
 
         public string Period { get; set; }
+
+        public string BingMapApiKey { get; set; }
+
+        public double Longitude { get; set; }
+
+        public double Latitude { get; set; }
     }
 
     public class Days
