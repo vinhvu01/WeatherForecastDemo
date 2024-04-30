@@ -80,6 +80,29 @@
     </div>
 </div>
 
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Validation Error</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <label id="messageModal"></label>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script type="text/javascript">
@@ -88,43 +111,122 @@
         });
 
         $("#SearchNext15Days").click(function () {
+            if (!isValid()) {
+                return;
+            }
             var txtVal = $("#location").val();
+
             window.location = "@Url.Action("WeatherData", "Home")" +
                 "/" + txtVal;
         });
 
         $("#SearchDynamicPeriods").click(function () {
+            if (!isValid()) {
+                return;
+            }
+
+            var period = $('#dynamicPeriods').text().trim();
+            if (period == "Open this select menu") {
+                $('#messageModal').text("Please select a period item.")
+                $('#myModal').modal("show");
+                return;
+            }
+
             var txtVal = $("#location").val();
             var period = $('#dynamicPeriods').text();
-            if (period != "") {
-                window.location = "@Url.Action("WeatherDataDynamicPeriod", "Home")?id=" + txtVal + "&period=" + period;
-            }
+            window.location = "@Url.Action("WeatherDataDynamicPeriod", "Home")?id=" + txtVal + "&period=" + period;
         });
         
         $("#SearchByDateRange").click(function () {
-            var txtVal = $("#location").val();
+            if (!isValid()) {
+                return;
+            }
+
             var txtFromDate = $("#fromDate").val();
             var txtToDate = $("#toDate").val();
+
+            if (txtFromDate == "") {
+                $('#messageModal').text("Please enter from Date.")
+                $('#myModal').modal("show");
+                return false;
+            }
+
+            if (txtToDate == "") {
+                $('#messageModal').text("Please enter to Date.")
+                $('#myModal').modal("show");
+                return false;
+            }
+
             window.location = "@Url.Action("WeatherDataByDateRange", "Home")?id=" + txtVal + "&from=" + txtFromDate + "&to=" + txtToDate;
         });
 
         $("#SearchByLongLatRange").click(function () {
             var txtLong = $("#longitude").val();
             var txtLat = $("#latitude").val();
+
+            if (txtLong == "") {
+                $('#messageModal').text("Please enter the longitude.")
+                $('#myModal').modal("show");
+                return false;
+            }
+
+            if (txtLat == "") {
+                $('#messageModal').text("Please enter the latitude.")
+                $('#myModal').modal("show");
+                return false;
+            }
+
             window.location = "@Url.Action("WeatherDataByLongLatRange", "Home")?longitude=" + txtLong + "&latitude=" + txtLat;
         });
 
         $("#SearchBySpecificTime").click(function () {
+            if (!isValid()) {
+                return;
+            }
             var txtVal = $("#location").val();
             var txtTime = $("#specificTime").val();
+
+            if (txtTime == "") {
+                $('#messageModal').text("Please enter the specific time.")
+                $('#myModal').modal("show");
+                return false;
+            }
+
             window.location = "@Url.Action("WeatherDataBySpecificTime", "Home")?id=" + txtVal + "&specificTime=" + txtTime;
         });
 
         $("#SearchByUNIXTime").click(function () {
+            if (!isValid()) {
+                return;
+            }
             var txtVal = $("#location").val();
             var txtFromDate = $("#fromUnix").val();
             var txtToDate = $("#toUnix").val();
+            if (txtFromDate == "") {
+                $('#messageModal').text("Please enter the from Date.")
+                $('#myModal').modal("show");
+                return false;
+            }
+
+            if (txtToDate == "") {
+                $('#messageModal').text("Please enter the to Date.")
+                $('#myModal').modal("show");
+                return false;
+            }
+
             window.location = "@Url.Action("WeatherDataByUnixTime", "Home")?id=" + txtVal + "&from=" + txtFromDate + "&to=" + txtToDate;
         });
+
+        function isValid() {
+            var txtVal = $("#location").val();
+
+            if (txtVal == "") {
+                $('#messageModal').text("Please enter location.")
+                $('#myModal').modal("show");
+                return false;
+            }
+
+            return true;
+        }
     </script>
 }
