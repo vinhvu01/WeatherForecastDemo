@@ -26,6 +26,9 @@
 
     Html.RenderPartial("_DaysTable", Model.Days.GetRange(1, 14));
 
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>	
+
     <a asp-action="" class="btn btn-sm btn-primary">Search Other City</a>
     <br />
 }
@@ -38,3 +41,36 @@ catch
     <a asp-action="" class="btn btn-sm btn-primary">Search Other City</a>
 
 }
+
+<script>
+	window.onload = function () {
+
+		var chart = new CanvasJS.Chart("chartContainer", {
+			animationEnabled: true,
+			title: {
+				text: "Temperature Trends By Days"
+			},
+			toolTip: {
+				shared: true
+			},
+			data: [{
+				type: "line",
+				name: "Temp",
+				showInLegend: true,
+				dataPoints: @Html.Raw(ViewBag.Temp)
+		}, {
+				type: "line",
+				name: "TempMax",
+				showInLegend: true,
+				dataPoints: @Html.Raw(ViewBag.TempMax)
+		}, {
+				type: "line",
+				name: "TempMin",
+				showInLegend: true,
+				dataPoints: @Html.Raw(ViewBag.TempMin)
+		}]
+		});
+		chart.render();
+
+	}
+</script>

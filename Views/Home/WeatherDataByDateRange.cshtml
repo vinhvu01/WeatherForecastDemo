@@ -1,6 +1,6 @@
 ﻿@model WeatherData
 @{
-    Layout = "_Layout"; 
+    Layout = "_Layout";
     ViewBag.Title = "Daily Forecast";
 }
 
@@ -14,6 +14,9 @@
 
     Html.RenderPartial("_DaysTable", Model.Days);
 
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+
     <a asp-action="" class="btn btn-sm btn-primary">Search Other City</a>
     <br />
 }
@@ -26,3 +29,29 @@ catch
     <a asp-action="" class="btn btn-sm btn-primary">Search Other City</a>
 
 }
+
+<script>
+    window.onload = function () {
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            title: {
+                text: "Feelslike forecast by days"
+            },
+            axisX: {
+                valueFormatString: "DD MMM"
+            },
+            axisY: {
+                title: "Feelslike"
+            },
+            data: [{
+                type: "spline",
+                xValueType: "dateTime",
+                xValueFormatString: "DD MMM",
+                dataPoints: @Html.Raw(ViewBag.Feelslike)
+            }]
+            });
+        chart.render();
+
+    }
+</script>
