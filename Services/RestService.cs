@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WeatherForecast.Models;
@@ -26,7 +27,12 @@ namespace WeatherForecast.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    weatherData = JsonConvert.DeserializeObject<WeatherData>(content);
+                    var jsonSerializerOptions = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore
+                    };
+
+                    weatherData = JsonConvert.DeserializeObject<WeatherData>(content, jsonSerializerOptions);
                 }
             }
             catch (Exception ex)

@@ -22,7 +22,7 @@
     <h2>Daily</h2>
     @if (Model.Period != "last24hours" && Model.Period != "next24hours")
     {
-        Html.RenderPartial("_DaysTable", @Model.Days);
+        Html.RenderPartial("_DaysTable", Model.Days);
     }
     else
     {

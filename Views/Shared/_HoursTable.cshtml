@@ -1,28 +1,82 @@
 ﻿@model List<Hours>
-<table class="table table-sm table-striped table-bordered m-2">
+<table class="table table-sm table-striped table-bordered m-2" style="white-space: nowrap;">
     <thead>
-    <tr>
-        <th>DateTime</th>
-        <th>Temp</th>
-        <th>FeelsLike</th>
-        <th>WindSpeed</th>
-        <th>WindGust</th>
-        <th>Pressure</th>
-    </tr>
+        <tr>
+            <th>DateTime</th>
+            <th>Temp</th>
+            <th>FeelsLike</th>
+            <th>FeelsLikeMax</th>
+            <th>FeelsLikeMin</th>
+            <th>Humidity</th>
+            <th>Dew</th>
+            <th>PreCip</th>
+            <th>PreCipProb</th>
+            <th>Snow</th>
+            <th>SnowDepth</th>
+            <th>PreCipType</th>
+            <th>WindSpeed</th>
+            <th>WindGust</th>
+            <th>WindDir</th>
+            <th>Pressure</th>
+            <th>Visibility</th>
+            <th>CloudCover</th>
+            <th>SolarRadiation</th>
+            <th>SolarEnergy</th>
+            <th>SevereRisk</th>
+            <th>Conditions</th>
+            <th>Icon</th>
+            <th>Stations</th>
+            <th>Source</th>
+            <th>Name</th>
+        </tr>
     </thead>
     <tbody>
 
-    @foreach (var hour in @Model)
-    {
-        <tr>
-            <td>@hour.DateTime </td>
-            <td>@hour.Temp °C</td>
-            <td>@hour.FeelsLike °C</td>
-            <td>@hour.WindSpeed mph</td>
-            <td>@hour.Windgust mph</td>
-            <td>@hour.Pressure</td>
-        </tr>
-    }
+        @foreach (var day in Model)
+        {
+            <tr>
+                <td>@day.DateTime </td>
+                <td>@day.Temp °C</td>
+                <td>@day.FeelsLike °C</td>
+                <td>@day.Humidity</td>
+                <td>@day.Dew </td>
+                <td>@day.PreCip</td>
+                <td>@day.PreCipProb</td>
+                <td>@day.Snow</td>
+                <td>@day.SnowDepth</td>
+                @if (day.PreCipType != null)
+                {
+                    <td>@day.PreCipType.ToString()</td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td>@day.Windgust mph</td>
+                <td>@day.WindSpeed mph</td>
+                <td>@day.WindDir</td>
+                <td>@day.Pressure</td>
+                <td>@day.WindDir</td>
+                <td>@day.Visibility</td>
+                <td>@day.CloudCover</td>
+                <td>@day.SolarRadiation</td>
+                <td>@day.SolarEnergy</td>
+                <td>@day.UvIndex</td>
+                <td>@day.SevereRisk</td>
+                <td>@day.Conditions</td>
+                <td>@day.Icon</td>
+                @if (day.Stations != null)
+                {
+                    <td>@day.Stations.ToString()</td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td>@day.Source</td>
+                <td>@day.Name</td>
+            </tr>
+        }
     </tbody>
 </table>
 <br />
