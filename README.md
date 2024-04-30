@@ -25,12 +25,15 @@ Used:
 - BingMapAPI
 
 Search Forecast page:
+
 ![image](https://github.com/vinhvu01/WeatherForecastDemo/assets/53502920/a9a55a39-f8de-49b6-adcd-5c86f4674d05)
 
 Daily Result page:
+
 ![image](https://github.com/vinhvu01/WeatherForecastDemo/assets/53502920/0cd3b69c-fc59-4b75-9a28-3bfe9f783a58)
 
 Hourly Result page:
+
 ![image](https://github.com/vinhvu01/WeatherForecastDemo/assets/53502920/9c08149f-5106-4a27-a27c-173af0b64c8c)
 
 Charts:
