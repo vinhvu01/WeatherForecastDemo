@@ -1,0 +1,28 @@
+﻿@model List<Hours>
+<table class="table table-sm table-striped table-bordered m-2">
+    <thead>
+    <tr>
+        <th>DateTime</th>
+        <th>Temp</th>
+        <th>FeelsLike</th>
+        <th>WindSpeed</th>
+        <th>WindGust</th>
+        <th>Pressure</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    @foreach (var hour in @Model)
+    {
+        <tr>
+            <td>@hour.DateTime </td>
+            <td>@hour.Temp °C</td>
+            <td>@hour.FeelsLike °C</td>
+            <td>@hour.WindSpeed mph</td>
+            <td>@hour.Windgust mph</td>
+            <td>@hour.Pressure</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<br />

@@ -1,6 +1,6 @@
 ﻿@model WeatherData
 @{
-    Layout = "_Layout"; 
+    Layout = "_Layout";
     ViewBag.Title = "Daily Forecast";
 }
 
@@ -20,66 +20,14 @@
     </div>
 
     <h2>Daily</h2>
-    <table class="table table-sm table-striped table-bordered m-2">
-        @if (Model.Period != "last24hours" && Model.Period != "next24hours")
-        {
-            <thead>
-            <tr>
-                <th>DateTime</th>
-                <th>Description</th>
-                <th>Temp</th>
-                <th>TempMax</th>
-                <th>TempMin</th>
-                <th>FeelsLike</th>
-                <th>WindSpeed</th>
-                <th>WindGust</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var day in Model.Days)
-            {
-                <tr>
-                    <td>@day.DateTime </td>
-                    <td>@day.Description</td>
-                    <td>@day.Temp °C</td>
-                    <td>@day.TempMax °C</td>
-                    <td>@day.TempMin °C</td>
-                    <td>@day.FeelsLike °C</td>
-                    <td>@day.WindSpeed mph</td>
-                    <td>@day.Windgust mph</td>
-                </tr>
-            }
-            </tbody>
-        }
-        else
-        {
-            <thead>
-            <tr>
-                <th>DateTime</th>
-                <th>Temp</th>
-                <th>FeelsLike</th>
-                <th>WindSpeed</th>
-                <th>WindGust</th>
-                <th>Pressure</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            @foreach (var hour in Model.Days[0].Hours)
-            {
-                <tr>
-                    <td>@hour.DateTime </td>
-                    <td>@hour.Temp °C</td>
-                    <td>@hour.FeelsLike °C</td>
-                    <td>@hour.WindSpeed mph</td>
-                    <td>@hour.Windgust mph</td>
-                    <td>@hour.Pressure</td>
-                </tr>
-            }
-            </tbody>
-        }
-    </table>
-    <br />
+    @if (Model.Period != "last24hours" && Model.Period != "next24hours")
+    {
+        Html.RenderPartial("_DaysTable", @Model.Days);
+    }
+    else
+    {
+        Html.RenderPartial("_HoursTable", Model.Days[0].Hours);
+    }
     <a asp-action="" class="btn btn-sm btn-primary">Search Other City</a>
     <br />
 }

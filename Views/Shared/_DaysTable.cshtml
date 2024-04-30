@@ -1,0 +1,32 @@
+﻿@model List<Days>
+<table class="table table-sm table-striped table-bordered m-2">
+    <thead>
+    <tr>
+        <th>DateTime</th>
+        <th>Description</th>
+        <th>Temp</th>
+        <th>TempMax</th>
+        <th>TempMin</th>
+        <th>FeelsLike</th>
+        <th>WindSpeed</th>
+        <th>WindGust</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    @foreach (var day in Model)
+    {
+        <tr>
+            <td>@day.DateTime </td>
+            <td>@day.Description</td>
+            <td>@day.Temp °C</td>
+            <td>@day.TempMax °C</td>
+            <td>@day.TempMin °C</td>
+            <td>@day.FeelsLike °C</td>
+            <td>@day.WindSpeed mph</td>
+            <td>@day.Windgust mph</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<br />
