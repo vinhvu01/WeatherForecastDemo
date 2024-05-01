@@ -42,7 +42,6 @@
                 <td>@day.PreCip</td>
                 <td>@day.PreCipProb</td>
                 <td>@day.PreCipCover</td>
-                <td>@day.Snow</td>
                 @if (day.PreCipType != null)
                 {
                     <td>@day.PreCipType.ToString()</td>
@@ -51,6 +50,7 @@
                 {
                     <td></td>
                 }
+                <td>@day.Snow</td>
                 <td>@day.SnowDepth</td>
                 <td>@day.WindSpeed mph</td>
                 <td>@day.Windgust mph</td>
